@@ -1,0 +1,25 @@
+﻿OAuth2.0流程
+
+第一步：重定向到renren的授权页面，获取Authorization Code
+https://graph.renren.com/oauth/authorize?client_id=d0f4ba49bc014a878cef066451d07bf4&redirect_uri=http://125.65.110.84:8081/snooker/main.html&response_type=code&scope=read_user_album+read_user_feed
+
+在浏览器中的code即为Authorization Code：
+http://125.65.110.84:8081/snooker/main.html?code=22zbdPrs68JJLPvSCPQMoHwX33X9d8tE
+
+第二步：获取Access Token
+格式：
+https://graph.renren.com/oauth/token?grant_type=authorization_code&
+     client_id=YOUR_API_KEY&redirect_uri=YOUR_CALLBACK_URL&
+     client_secret=YOUR_SECRET_KEY&code=THE_CODE_FROM_ABOVE
+
+实例：
+https://graph.renren.com/oauth/token?grant_type=authorization_code&     client_id=d0f4ba49bc014a878cef066451d07bf4&redirect_uri=http://125.65.110.84:8081/snooker/main.html&     client_secret=9c8adc7c059e4d0f842ab6c728fedb53&code=cTPLYXH2gIdAsw0u5Qr8xL6bZoNx8B5t
+
+通过浏览器可能会得到400错误，必须使用httpWatch（网络嗅探工具）才能获得如下具体信息：
+{"scope":"read_user_feed read_user_album","expires_in":2592544,"refresh_token":"212617|0.cQPE8JWP9u4t8i95z5AgVGdvTOQOiui9.702857823.1348067894973","user":{"id":702857823,"name":"古千峰","avatar":[{"type":"avatar","url":"http://hdn101.rrimg.com/photos/hdn101/20090113/09/27/head_qiQv_9932d000001.jpg"},{"type":"tiny","url":"http://hdn101.rrimg.com/photos/hdn101/20090113/09/27/tiny_L748_9932d000001.jpg"},{"type":"main","url":"http://hdn101.rrimg.com/photos/hdn101/20090113/09/27/head_qiQv_9932d000001.jpg"},{"type":"large","url":"http://hdn101.rrimg.com/photos/hdn101/20090113/09/27/large_OWvX_10109o000001.jpg"}]},"access_token":"212617|6.8b1007f7e2bec98c9d25a88c29ee2d5b.2592000.1350662400-702857823"}
+
+
+住：我写了一个php，可以方便获取Authorization Code，http://125.65.110.84:8081/snooker/getAccessToken.php
+
+****千万注意，在调用swf的html文件中需要调用renren.js文件****曾经因为这个没写整了足足两天时间。
+
